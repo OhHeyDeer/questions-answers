@@ -2,7 +2,7 @@ const { generateProducts, generateQuestions, generateAnswers, generatePhotos } =
 const { client } = require('./clientGeneration');
 
 // Write a script here to asynchronusly (or not) generate each CSV file
-const generateTenMillionRecords = () => {
+const generateOneMillionRecords = () => {
     console.time("Product Generation")
     generateProducts(() => {
         console.timeEnd("Product Generation");
@@ -22,9 +22,13 @@ const generateTenMillionRecords = () => {
 }
  
 // Write a script here to asynchronusly seed each CSV to the database
-const seedTenMillionRecords = () => {
+const insertOneMillionRecords = () => {
+    
     
 }
 
-generateTenMillionRecords();
-// client.query("\COPY products(name) FROM '/Users/nickwtimms/Desktop/Galvanize_Work/SDC/questions-answers/server/db/data/productData.csv' WITH (FORMAT csv)");
+const insertTenMillionRecords = () => {
+
+}
+
+generateOneMillionRecords();

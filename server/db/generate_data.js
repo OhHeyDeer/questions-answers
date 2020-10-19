@@ -29,7 +29,7 @@ const generateProducts = (callback) => {
 // Questions Generation -- 1,000,000 Records
 const generateQuestions = (callback) => {
     const writeQuestionStream = fs.createWriteStream('server/db/data/questionData.csv');
-    let i = 1000000;
+    let i = 100000;
     const write = () => {
         let status = true;
         let currentProduct = 1;
@@ -65,7 +65,7 @@ const generateQuestions = (callback) => {
 // Answers Generation -- 1,000,000 Records
 const generateAnswers = (callback) => {
     const writeAnswersStream = fs.createWriteStream('server/db/data/answersData.csv');
-    let i = 1000000;
+    let i = 100000;
     const write = () => {
         let status = true;
         let currentQuestion = 1;
@@ -75,7 +75,7 @@ const generateAnswers = (callback) => {
             i--; // Could need to be first
             if (aPerQCount === answersPerQuestionsTotal) {
                 // In the event that there are multiple questions that get 0 answers, handle the max being hit
-                if (currentQuestion === 1000000 || currentQuestion === 999999) {
+                if (currentQuestion >= 100000) {
                     currentQuestion = 1;
                 } else {
                     currentQuestion++;
@@ -102,17 +102,17 @@ const generateAnswers = (callback) => {
 // Photos Generation -- 1,000,000
 const generatePhotos = (callback) => {
     const writePhotosStream = fs.createWriteStream('server/db/data/photosData.csv');
-    let i = 1000000;
+    let i = 100000;
     const write = () => {
         let status = true;
         let currentAnswer = 1;
-        let photosPerAnswerTotal = Math.random() * Math.floor(20);
+        let photosPerAnswerTotal = Math.random() * Math.floor(5);
         let pPerACount = 0;
         while (i > 0 && status) {
             i--; // Could need to be first
             if (pPerACount === photosPerAnswerTotal) {
                 // In the event that there are multiple answers that get 0 photos, handle the max being hit
-                if (currentAnswer === 1000000 || currentAnswer === 999999) {
+                if (currentAnswer === 100000 || currentAnswer === 99999) {
                     currentAnswer = 1;
                 } else {
                     currentAnswer++;

@@ -15,10 +15,11 @@ const createAnswer = (questionId) => {
     const body = faker.lorem.paragraph();
     const date = JSON.stringify(faker.date.between('2019-01-01', '2020-09-11'));
 
-    const first = faker.name.firstName;
-    const last = faker.name.lastName;
+    const first = faker.name.firstName();
+    const last = faker.name.lastName();
     const name = `${first} ${last}`;
 
+    // ADD IN REPORTED FOR ROUTE
     const helpfulness = faker.random.number(20);
     const question_id = questionId;
     
@@ -30,8 +31,8 @@ const createAnswer = (questionId) => {
 const createQuestion = (productId) => {
     const body = faker.lorem.paragraph(5);
     const date = JSON.stringify(faker.date.between('2019-01-01', '2020-09-11'));
-    const first = faker.name.firstName;
-    const last = faker.name.lastName;
+    const first = faker.name.firstName();
+    const last = faker.name.lastName();
     const asker_name = `${first} ${last}`;
     const helpfulness = faker.random.number(20);
     const reported = faker.random.number(1); // Could generate only reported questions
