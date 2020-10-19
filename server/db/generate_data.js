@@ -1,24 +1,23 @@
 const { createPhoto, createAnswer, createQuestion, createProduct } = require('./fake_data');
 const fs = require('fs');
 
-// const writeStream = fs.createWriteStream('./data/productData.csv');
+// const writeStream = fs.createWriteStream('productData.csv');
 // The scripts to generate CSV files for each table
 
 // Products Generation -- 100,000 Records
-const generateProducts = () => {
-    const writeProductStream = fs.createWriteStream('./data/productData.csv');
+const generateProducts = (callback) => {
+    const writeProductStream = fs.createWriteStream('server/db/data/productData.csv');
     let i = 100000;
     const write = () => {
         let status = true;
         while (i > 0 && status) {
+            i--; // Could need to be first
             const newProduct = createProduct();
             if (i === 0) {
-                writeProductStream.write(newProduct, 'utf-8');
-                writeProductStream.end();
+                writeProductStream.write(newProduct, 'utf-8', () => { writeProductStream.end(); callback(); });
             } else {
                 status = writeProductStream.write(newProduct, 'utf-8');
             }
-            i--; // Could need to be first
         }
         if (i > 0) {
             writeProductStream.once('drain', write);
@@ -28,8 +27,8 @@ const generateProducts = () => {
 };
 
 // Questions Generation -- 1,000,000 Records
-const generateQuestions = () => {
-    const writeQuestionStream = fs.createWriteStream('./data/questionData.csv');
+const generateQuestions = (callback) => {
+    const writeQuestionStream = fs.createWriteStream('server/db/data/questionData.csv');
     let i = 1000000;
     const write = () => {
         let status = true;
@@ -37,6 +36,7 @@ const generateQuestions = () => {
         let questionsPerProductTotal = Math.random() * Math.floor(20);
         let qPerPCount = 0;
         while (i > 0 && status) {
+            i--; // Could need to be first
             if (qPerPCount === questionsPerProductTotal) {
                 if (currentProduct === 100000 || currentProduct === 99999) {
                     currentProduct = 1;
@@ -50,12 +50,10 @@ const generateQuestions = () => {
             }
             const newQuestion = createQuestion(currentProduct);
             if (i === 0) {
-                writeQuestionStream.write(newQuestion, 'utf-8');
-                writeQuestionStream.end();
+                writeQuestionStream.write(newQuestion, 'utf-8', () => { writeQuestionStream.end(); callback(); });
             } else {
                 status = writeQuestionStream.write(newQuestion, 'utf-8');
             }
-            i--; // Could need to be first
         }
         if (i > 0) {
             writeQuestionStream.once('drain', write);
@@ -65,8 +63,8 @@ const generateQuestions = () => {
 };
 
 // Answers Generation -- 1,000,000 Records
-const generateAnswers = () => {
-    const writeAnswersStream = fs.createWriteStream('./data/answersData.csv');
+const generateAnswers = (callback) => {
+    const writeAnswersStream = fs.createWriteStream('server/db/data/answersData.csv');
     let i = 1000000;
     const write = () => {
         let status = true;
@@ -74,6 +72,7 @@ const generateAnswers = () => {
         let answersPerQuestionsTotal = Math.random() * Math.floor(20);
         let aPerQCount = 0;
         while (i > 0 && status) {
+            i--; // Could need to be first
             if (aPerQCount === answersPerQuestionsTotal) {
                 // In the event that there are multiple questions that get 0 answers, handle the max being hit
                 if (currentQuestion === 1000000 || currentQuestion === 999999) {
@@ -88,12 +87,10 @@ const generateAnswers = () => {
             }
             const newAnswer = createAnswer(currentQuestion);
             if (i === 0) {
-                writeAnswersStream.write(newAnswer, 'utf-8');
-                writeAnswersStream.end();
+                writeAnswersStream.write(newAnswer, 'utf-8', () => { writeAnswersStream.end(); callback(); });
             } else {
                 status = writeAnswersStream.write(newAnswer, 'utf-8');
             }
-            i--; // Could need to be first
         }
         if (i > 0) {
             writeAnswersStream.once('drain', write);
@@ -103,8 +100,8 @@ const generateAnswers = () => {
 };
 
 // Photos Generation -- 1,000,000
-const generatePhotos = () => {
-    const writePhotosStream = fs.createWriteStream('./data/photosData.csv');
+const generatePhotos = (callback) => {
+    const writePhotosStream = fs.createWriteStream('server/db/data/photosData.csv');
     let i = 1000000;
     const write = () => {
         let status = true;
@@ -112,6 +109,7 @@ const generatePhotos = () => {
         let photosPerAnswerTotal = Math.random() * Math.floor(20);
         let pPerACount = 0;
         while (i > 0 && status) {
+            i--; // Could need to be first
             if (pPerACount === photosPerAnswerTotal) {
                 // In the event that there are multiple answers that get 0 photos, handle the max being hit
                 if (currentAnswer === 1000000 || currentAnswer === 999999) {
@@ -126,12 +124,10 @@ const generatePhotos = () => {
             }
             const newPhoto = createPhoto(currentAnswer);
             if (i === 0) {
-                writePhotosStream.write(newPhoto, 'utf-8');
-                writePhotosStream.end();
+                writePhotosStream.write(newPhoto, 'utf-8', () => { writePhotosStream.end(); callback(); });
             } else {
                 status = writePhotosStream.write(newPhoto, 'utf-8');
             }
-            i--; // Could need to be first
         }
         if (i > 0) {
             writePhotosStream.once('drain', write);
