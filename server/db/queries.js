@@ -8,13 +8,11 @@ const { client } = require('./clientGeneration');
 // \COPY answers(body, date, answerer_name, helpfulness, question_id) FROM '/Users/nickwtimms/Desktop/Galvanize_Work/SDC/questions-answers/server/db/data/answersData.csv' WITH (FORMAT csv)
 // \COPY photos(url, answer_id) FROM '/Users/nickwtimms/Desktop/Galvanize_Work/SDC/questions-answers/server/db/data/photosData.csv' WITH (FORMAT csv)
 
-
-
 // List Questions
 // Retrieves a list of questions for a particular product. This list does not include any reported questions.
 const retrieveQuestionsList = (id = 1, count = 5, callback) => {
     client.connect();
-    client.query(`SELECT * FROM questions WHERE product_id = ${id} LIMIT ${count}`, (err, res) => {
+    client.query(`SELECT * FROM questions INNER JOIN answers ON questions.id = answers.question_id WHERE questions.product_id = ${id} LIMIT ${count}`, (err, res) => {
         if (err) {
             callback(err);
         } else {
@@ -22,6 +20,16 @@ const retrieveQuestionsList = (id = 1, count = 5, callback) => {
             client.end();
         }
     }); 
+    // --- Possible Solution for Inner Joining the two tables ---
+    // SELECT * FROM questions 
+    // INNER JOIN answers ON questions.id = answers.question_id
+    // INNER JOIN photos ON photos.answer_id = answers.id
+    // WHERE questions.product_id = 1
+    // LIMIT 100;
+    // --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    // Parse the data to setup the object to return to the client
+    // Needs to also get the photos from the photos table and population the results object with that data
 };
 
 // Answers List
@@ -37,9 +45,8 @@ const retrieveAnswersList = (id = 1, count = 5, callback) => {
             client.end();
         }
     });
+     // Needs to also get the photos from the photos table and population the results object with that data
 };
-
-retrieveAnswersList(10, 5, (err, data) => { console.log(data); })
 
 // Add a Question
 // Adds a question for the given product
@@ -53,8 +60,8 @@ const addAQuestionToDB = (productId, body, callback) => {
             client.end();
         }
     });
-
 };
+
 // Add an Answer
 // Adds an answer for the given question
 const addAnAnswerToDB = (questionId, body, callback) => {
@@ -68,9 +75,6 @@ const addAnAnswerToDB = (questionId, body, callback) => {
             client.end();
         }
     });
-
-
-
 };
 
 // Mark Question as Helpful

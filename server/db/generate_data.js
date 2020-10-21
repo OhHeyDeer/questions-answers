@@ -7,7 +7,7 @@ const fs = require('fs');
 // Products Generation -- 100,000 Records
 const generateProducts = (callback) => {
     const writeProductStream = fs.createWriteStream('server/db/data/productData.csv');
-    let i = 100000;
+    let i = 1000000;
     const write = () => {
         let status = true;
         while (i > 0 && status) {
@@ -29,21 +29,21 @@ const generateProducts = (callback) => {
 // Questions Generation -- 1,000,000 Records
 const generateQuestions = (callback) => {
     const writeQuestionStream = fs.createWriteStream('server/db/data/questionData.csv');
-    let i = 100000;
+    let i = 1000000;
+    let currentProduct = 1;
     const write = () => {
         let status = true;
-        let currentProduct = 1;
-        let questionsPerProductTotal = Math.random() * Math.floor(20);
+        let questionsPerProductTotal = Math.floor(Math.random() * 20);
         let qPerPCount = 0;
         while (i > 0 && status) {
             i--; // Could need to be first
             if (qPerPCount === questionsPerProductTotal) {
-                if (currentProduct === 100000 || currentProduct === 99999) {
+                if (currentProduct >= 1000000) {
                     currentProduct = 1;
                 } else {
                     currentProduct++;
                 }
-                questionsPerProductTotal = Math.random() * Math.floor(20);
+                questionsPerProductTotal = Math.floor(Math.random() * 20);
                 qPerPCount = 0;
             } else {
                 qPerPCount++;
@@ -65,22 +65,22 @@ const generateQuestions = (callback) => {
 // Answers Generation -- 1,000,000 Records
 const generateAnswers = (callback) => {
     const writeAnswersStream = fs.createWriteStream('server/db/data/answersData.csv');
-    let i = 100000;
+    let i = 1000000;
+    let currentQuestion = 1;
     const write = () => {
         let status = true;
-        let currentQuestion = 1;
-        let answersPerQuestionsTotal = Math.random() * Math.floor(20);
+        let answersPerQuestionsTotal = Math.floor(Math.random() * 20);
         let aPerQCount = 0;
         while (i > 0 && status) {
             i--; // Could need to be first
             if (aPerQCount === answersPerQuestionsTotal) {
                 // In the event that there are multiple questions that get 0 answers, handle the max being hit
-                if (currentQuestion >= 100000) {
+                if (currentQuestion >= 1000000) {
                     currentQuestion = 1;
                 } else {
                     currentQuestion++;
                 }
-                answersPerQuestionsTotal = Math.random() * Math.floor(20);
+                answersPerQuestionsTotal = Math.floor(Math.random() * 20);
                 aPerQCount = 0;
             } else {
                 aPerQCount++;
@@ -102,22 +102,22 @@ const generateAnswers = (callback) => {
 // Photos Generation -- 1,000,000
 const generatePhotos = (callback) => {
     const writePhotosStream = fs.createWriteStream('server/db/data/photosData.csv');
-    let i = 100000;
+    let i = 1000000;
+    let currentAnswer = 1;
     const write = () => {
         let status = true;
-        let currentAnswer = 1;
-        let photosPerAnswerTotal = Math.random() * Math.floor(5);
+        let photosPerAnswerTotal = Math.floor(Math.random() * 5);
         let pPerACount = 0;
         while (i > 0 && status) {
             i--; // Could need to be first
             if (pPerACount === photosPerAnswerTotal) {
                 // In the event that there are multiple answers that get 0 photos, handle the max being hit
-                if (currentAnswer === 100000 || currentAnswer === 99999) {
+                if (currentAnswer >= 1000000) {
                     currentAnswer = 1;
                 } else {
                     currentAnswer++;
                 }
-                photosPerAnswerTotal = Math.random() * Math.floor(20);
+                photosPerAnswerTotal = Math.floor(Math.random() * 20);
                 pPerACount = 0;
             } else {
                 pPerACount++;
