@@ -12,7 +12,15 @@ const { client } = require('./clientGeneration');
 // Retrieves a list of questions for a particular product. This list does not include any reported questions.
 const retrieveQuestionsList = (id = 1, count = 5, callback) => {
     client.connect();
-    client.query(`SELECT * FROM questions INNER JOIN answers ON questions.id = answers.question_id WHERE questions.product_id = ${id} LIMIT ${count}`, (err, res) => {
+    client.query(`SELECT questions.*, answers.*, photos.*
+    FROM questions
+    FULL OUTER JOIN answers 
+    ON questions.q_id = answers.question_id
+    FULL OUTER JOIN photos
+    ON answers.a_id = photos.answer_id
+    WHERE questions.product_id = ${id}
+    LIMIT ${count};`,
+    (err, res) => {
         if (err) {
             callback(err);
         } else {
@@ -20,14 +28,6 @@ const retrieveQuestionsList = (id = 1, count = 5, callback) => {
             client.end();
         }
     }); 
-    // --- Possible Solution for Inner Joining the two tables ---
-    // SELECT * FROM questions 
-    // INNER JOIN answers ON questions.id = answers.question_id
-    // INNER JOIN photos ON photos.answer_id = answers.id
-    // WHERE questions.product_id = 1
-    // LIMIT 100;
-    // --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
     // Parse the data to setup the object to return to the client
     // Needs to also get the photos from the photos table and population the results object with that data
 };
