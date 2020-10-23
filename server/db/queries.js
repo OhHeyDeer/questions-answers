@@ -10,8 +10,9 @@ const { client } = require('./clientGeneration');
 
 // List Questions
 // Retrieves a list of questions for a particular product. This list does not include any reported questions.
-const retrieveQuestionsList = (id = 1, count = 5, callback) => {
-    client.connect();
+client.connect();
+
+const retrieveQuestionsList = (id = 1, callback) => {
     client.query(`SELECT questions.*, answers.*, photos.*
     FROM questions
     FULL OUTER JOIN answers 
@@ -19,13 +20,12 @@ const retrieveQuestionsList = (id = 1, count = 5, callback) => {
     FULL OUTER JOIN photos
     ON answers.a_id = photos.answer_id
     WHERE questions.product_id = ${id}
-    LIMIT ${count};`,
+    ORDER BY q_id ASC;`,
     (err, res) => {
         if (err) {
-            callback(err);
+            callback(err, null);
         } else {
-            callback(res.rows);
-            client.end();
+            callback(null, res);
         }
     }); 
     // Parse the data to setup the object to return to the client
@@ -34,10 +34,10 @@ const retrieveQuestionsList = (id = 1, count = 5, callback) => {
 
 // Answers List
 // Returns answers for a given question.This list does not include any reported answers.
-const retrieveAnswersList = (id = 1, count = 5, callback) => {
+const retrieveAnswersList = (id = 1, count, callback) => {
     client.connect();
     // Add in the query to find the photos for an answer
-    client.query(`SELECT * FROM answers WHERE question_id = ${id} LIMIT ${count}`, (err, res) => {
+    client.query(`SELECT * FROM answers WHERE question_id = ${id} `, (err, res) => {
         if (err) {
             callback(err, null);
         } else {

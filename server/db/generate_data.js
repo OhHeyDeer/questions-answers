@@ -4,10 +4,10 @@ const fs = require('fs');
 // const writeStream = fs.createWriteStream('productData.csv');
 // The scripts to generate CSV files for each table
 
-// Products Generation -- 100,000 Records
+// Products Generation -- 10,000,000 Records
 const generateProducts = (callback) => {
     const writeProductStream = fs.createWriteStream('server/db/data/productData.csv');
-    let i = 1000000;
+    let i = 10000000;
     const write = () => {
         let status = true;
         while (i > 0 && status) {
@@ -26,10 +26,10 @@ const generateProducts = (callback) => {
     write();
 };
 
-// Questions Generation -- 1,000,000 Records
+// Questions Generation -- 10,000,000 Records
 const generateQuestions = (callback) => {
     const writeQuestionStream = fs.createWriteStream('server/db/data/questionData.csv');
-    let i = 1000000;
+    let i = 10000000;
     let currentProduct = 1;
     const write = () => {
         let status = true;
@@ -38,7 +38,7 @@ const generateQuestions = (callback) => {
         while (i > 0 && status) {
             i--; // Could need to be first
             if (qPerPCount === questionsPerProductTotal) {
-                if (currentProduct >= 1000000) {
+                if (currentProduct >= 10000000) {
                     currentProduct = 1;
                 } else {
                     currentProduct++;
@@ -62,10 +62,10 @@ const generateQuestions = (callback) => {
     write();
 };
 
-// Answers Generation -- 1,000,000 Records
+// Answers Generation -- 10,000,000 Records
 const generateAnswers = (callback) => {
     const writeAnswersStream = fs.createWriteStream('server/db/data/answersData.csv');
-    let i = 1000000;
+    let i = 10000000;
     let currentQuestion = 1;
     const write = () => {
         let status = true;
@@ -75,7 +75,7 @@ const generateAnswers = (callback) => {
             i--; // Could need to be first
             if (aPerQCount === answersPerQuestionsTotal) {
                 // In the event that there are multiple questions that get 0 answers, handle the max being hit
-                if (currentQuestion >= 1000000) {
+                if (currentQuestion >= 10000000) {
                     currentQuestion = 1;
                 } else {
                     currentQuestion++;
@@ -99,10 +99,10 @@ const generateAnswers = (callback) => {
     write();
 };
 
-// Photos Generation -- 1,000,000
+// Photos Generation -- 10,000,000 Records
 const generatePhotos = (callback) => {
     const writePhotosStream = fs.createWriteStream('server/db/data/photosData.csv');
-    let i = 1000000;
+    let i = 10000000;
     let currentAnswer = 1;
     const write = () => {
         let status = true;
@@ -112,7 +112,7 @@ const generatePhotos = (callback) => {
             i--; // Could need to be first
             if (pPerACount === photosPerAnswerTotal) {
                 // In the event that there are multiple answers that get 0 photos, handle the max being hit
-                if (currentAnswer >= 1000000) {
+                if (currentAnswer >= 10000000) {
                     currentAnswer = 1;
                 } else {
                     currentAnswer++;

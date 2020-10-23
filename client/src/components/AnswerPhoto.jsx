@@ -14,7 +14,7 @@ const AnswerPhoto = ({answer}) => {
     setShow(true);
   };
 
-  const mappedPhotos = answer.photos.length ? answer.photos.map((photo, i) =>
+  const mappedPhotos = answer.photos.length && answer.photos[0].url !== "" ? answer.photos.map((photo, i) =>
     <div key={i}>
       <Figure>
         <Image
@@ -22,7 +22,7 @@ const AnswerPhoto = ({answer}) => {
           height={100}
           style={{paddingLeft: '5px', borderRadius: '8px', cursor: 'pointer'}}
           alt="user img of product"
-          src={photo}
+          src={photo.url}
           onClick={() => handleShow(photo)}
         />
         <Modal
@@ -37,7 +37,7 @@ const AnswerPhoto = ({answer}) => {
             // eslint-disable-next-line max-len
             style={{padding: '4px', borderRadius: '8px', cursor: 'pointer', marginBottom: '0px'}}
             alt="user img of product"
-            src={clicked}
+            src={clicked.url}
             onClick={() => handleClose()}
           />
         </Modal>
