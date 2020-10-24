@@ -117,7 +117,7 @@ const generatePhotos = (callback) => {
                 } else {
                     currentAnswer++;
                 }
-                photosPerAnswerTotal = Math.floor(Math.random() * 20);
+                photosPerAnswerTotal = Math.floor(Math.random() * 5);
                 pPerACount = 0;
             } else {
                 pPerACount++;

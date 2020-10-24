@@ -113,6 +113,20 @@ const dataParser = (data) => {
   return returnObject;
 }
 
+
+
+// GET the product name
+app.get('/products/:id', (req, res) => {
+
+  query.retrieveProductName(req.params.id, (err, data) => {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(200).send(data.rows[0]);
+    }
+  })
+})
+
 // GET all the Product Questions List
 app.get('/qa/:product_id', (req, res) => {
   const id = req.params.product_id;
@@ -121,46 +135,47 @@ app.get('/qa/:product_id', (req, res) => {
       res.status(400).send(err);
     } else {
       const data = dataParser(results);
+      console.timeEnd('HandleQuestionList');
       res.status(200).send(data);
     }
   })
 });
 
-// GET all the Answers List
-app.get('/qa/:question_id/answers', (req, res) => {
-  const id = req.params.question_id;
-  const count = (req.params.count ? req.params.count : 5 ); 
-  query.retrieveAnswersList(id, count, (err, results) => {
-    if (err) {
-      res.status(400).send(err);
-    } else {
-      res.status(200).send(results);
-    }
-  })
-});
+// GET all the Answers List --- NOT USED
+// app.get('/qa/:question_id/answers', (req, res) => {
+//   const id = req.params.question_id;
+//   const count = (req.params.count ? req.params.count : 5 ); 
+//   query.retrieveAnswersList(id, count, (err, results) => {
+//     if (err) {
+//       res.status(400).send(err);
+//     } else {
+//       res.status(200).send(results);
+//     }
+//   })
+// });
 
 // POST Adding a Question
 app.post('/qa/:product_id', (req, res) => {
   const id = req.params.product_id;
-  const body = req.params.body;
+  const body = req.body;
   query.addAQuestionToDB(id, body, (err, results) => {
     if (err) {
       res.status(404).send(err);
     } else {
-      res.status(204).send(results);
+      res.status(201).send(results);
     }
   })
 });
 
 // POST Adding an Answer
-app.post('/qa/:question_id', (req, res) => {
+app.post('/qa/:question_id/answers', (req, res) => {
   const id = req.params.question_id;
-  const body = req.params.body;
+  const body = req.body;
   query.addAnAnswerToDB(id, body, (err, results) => {
     if (err) {
       res.status(404).send(err);
     } else {
-      res.status(204).send(results);
+      res.status(201).send(results);
     }
   })
 });
@@ -184,7 +199,7 @@ app.put('/qa/answer/:answer_id/helpful', (req, res) => {
     if (err) {
       res.status(404).send(err);
     } else {
-      res.status(200).send(results);
+      res.status(204).send(results);
     }
   })
 });
@@ -196,7 +211,7 @@ app.put('/qa/question/:question_id/report', (req, res) => {
     if (err) {
       res.status(404).send(err);
     } else {
-      res.status(200).send(results);
+      res.status(204).send(results);
     }
   })
 });

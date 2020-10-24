@@ -26,7 +26,7 @@ const SubmitQForm = ({question, getProductQs, getId, onHide}) => {
     }
     setValidated(true);
     e.preventDefault();
-    axios.post(`http://52.26.193.201:3000/qa/${getId}`, {...state})
+    axios.post(`http://localhost:3001/qa/${getId}`, {...state})
         .then((res) => {
           console.log(res);
           onHide();

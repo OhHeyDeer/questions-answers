@@ -44,7 +44,7 @@ class App extends React.Component {
 
   productName() {
     const getId = this.state.getId;
-    axios.get(`http://52.26.193.201:3000/products/${getId}`)
+    axios.get(`http://localhost:3001/products/${getId}`)
         .then((res) => {
           this.setState({productName: res.data.name});
         })
@@ -52,7 +52,7 @@ class App extends React.Component {
   }
 
   isHelpfulQ(questID) {
-    axios.put(`http://52.26.193.201:3000/qa/question/${questID}/helpful`)
+    axios.put(`http://localhost:3001/qa/question/${questID}/helpful`)
         .then((res) => {
           console.log(res);
           this.setState();
@@ -61,7 +61,7 @@ class App extends React.Component {
   }
 
   isHelpfulA(answerID) {
-    axios.put(`http://52.26.193.201:3000/qa/answer/${answerID}/helpful`)
+    axios.put(`http://localhost:3001/qa/answer/${answerID}/helpful`)
         .then((res) => {
           this.setState({});
         })
