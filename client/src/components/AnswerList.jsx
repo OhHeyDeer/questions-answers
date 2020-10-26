@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import Button from 'react-bootstrap/Button';
 import Answer from './Answer.jsx';
@@ -11,6 +11,7 @@ const AnswerList = ({answers, isHelpfulA}) => {
     isHelpfulA={isHelpfulA}/>);
 
   const [load, setLoad] = useState(true);
+
 
   return (
     <div className="q-a-answer-list">

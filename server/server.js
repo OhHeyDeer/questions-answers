@@ -1,7 +1,9 @@
+require('newrelic');
 const express = require('express');
 const query = require('./db/queries');
 const app = express();
 const PORT = 3001;
+
 
 app.use(express.static('../client/dist'));
 app.use(express.json());
@@ -117,11 +119,12 @@ const dataParser = (data) => {
 
 // GET the product name
 app.get('/products/:id', (req, res) => {
-
+  console.time('HandleProductName');
   query.retrieveProductName(req.params.id, (err, data) => {
     if (err) {
       res.status(400).send(err);
     } else {
+      console.timeEnd('HandleProductName');
       res.status(200).send(data.rows[0]);
     }
   })
@@ -130,6 +133,7 @@ app.get('/products/:id', (req, res) => {
 // GET all the Product Questions List
 app.get('/qa/:product_id', (req, res) => {
   const id = req.params.product_id;
+  console.time('HandleQuestionList');
   query.retrieveQuestionsList(id, (err, results) => {
     if (err) {
       res.status(400).send(err);
@@ -158,10 +162,13 @@ app.get('/qa/:product_id', (req, res) => {
 app.post('/qa/:product_id', (req, res) => {
   const id = req.params.product_id;
   const body = req.body;
+  console.log(body);
+  console.time('AddAQuestion');
   query.addAQuestionToDB(id, body, (err, results) => {
     if (err) {
       res.status(404).send(err);
     } else {
+      console.timeEnd('AddAQuestion');
       res.status(201).send(results);
     }
   })
@@ -171,10 +178,12 @@ app.post('/qa/:product_id', (req, res) => {
 app.post('/qa/:question_id/answers', (req, res) => {
   const id = req.params.question_id;
   const body = req.body;
+  console.time('AddAnAnswer'); AddAnAnswer
   query.addAnAnswerToDB(id, body, (err, results) => {
     if (err) {
       res.status(404).send(err);
     } else {
+      console.timeEnd('AddAnAnswer');
       res.status(201).send(results);
     }
   })
@@ -183,10 +192,12 @@ app.post('/qa/:question_id/answers', (req, res) => {
 // PUT for Helpful Questions
 app.put('/qa/question/:question_id/helpful', (req, res) => {
   const id = req.params.question_id;
+  console.time('HelpfulQuestion');
   query.updateQuestionHelpful(id, (err, results) => {
     if (err) {
       res.status(404).send(err);
     } else {
+      console.timeEnd('HelpfulQuestion');
       res.status(204).send(results);
     }
   })
@@ -195,10 +206,12 @@ app.put('/qa/question/:question_id/helpful', (req, res) => {
 // PUT for Helpful Answers
 app.put('/qa/answer/:answer_id/helpful', (req, res) => {
   const id = req.params.answer_id;
+  console.time('HelpfulAnswer');
   query.updateAnswerHelpful(id, (err, results) => {
     if (err) {
       res.status(404).send(err);
     } else {
+      console.timeEnd('HelpfulAnswer');
       res.status(204).send(results);
     }
   })
@@ -207,19 +220,21 @@ app.put('/qa/answer/:answer_id/helpful', (req, res) => {
 // PUT for Report Questions
 app.put('/qa/question/:question_id/report', (req, res) => {
   const id = req.params.question_id;
+  console.time('ReportQuestion');
   query.updateQuestionReported(id, (err, results) => {
     if (err) {
       res.status(404).send(err);
     } else {
+      console.timeEnd('ReportQuestion');
       res.status(204).send(results);
     }
   })
 });
 
-// PUT for Report Answers
-app.put('/qa/answer/:answer_id/report', (req, res) => {
-  const id  = req.params.answer_id;
-});
+// // PUT for Report Answers
+// app.put('/qa/answer/:answer_id/report', (req, res) => {
+//   const id  = req.params.answer_id;
+// });
 
 
 app.listen(PORT, () => {

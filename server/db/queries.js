@@ -26,7 +26,6 @@ const retrieveProductName = (id, callback) => {
 
 
 const retrieveQuestionsList = (id = 1, callback) => {
-    console.time('HandleQuestionList');
     client.query(`SELECT questions.*, answers.*, photos.*
     FROM questions
     FULL OUTER JOIN answers 

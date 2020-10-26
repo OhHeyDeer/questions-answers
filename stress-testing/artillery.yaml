@@ -1,0 +1,73 @@
+#  artillery run load-test.yaml
+config:
+  target: "http://localhost:3001/"
+  http:
+    pool: 300
+  phases:
+    - duration: 30
+      arrivalRate: 15
+      name: Warm up
+    - duration: 60
+      arrivalRate: 25
+      rampTo: 200
+      name: Ramp up load
+    - duration: 60
+      arrivalRate: 400
+      name: Sustained load
+scenarios:
+  - name: 'Get Product Name'
+    flow:
+      - get:
+          url: '/'
+      - loop:
+        - get:
+            url: '/products/{{$randomNumber(1,100000)}}'
+        count: 2
+  - name: 'Get Questions List'
+    flow:
+      - get:
+          url: '/'
+      - loop:
+        - get:
+            url: '/qa/{{$randomNumber(1,100000)}}'
+        count: 2
+  - name: 'Post a Question'
+    flow:
+      - get:
+          url: '/'
+      - loop:
+        - get:
+            url: '/qa/{{$randomNumber(1,100000)}}'
+        count: 2
+  - name: 'Post an Answer'
+    flow:
+      - get:
+          url: '/'
+      - loop:
+        - get:
+            url: '/qa/{{$randomNumber(1,100000)}}/answers'
+        count: 2
+  - name: 'Update Question Helpful'
+    flow:
+      - get:
+          url: '/'
+      - loop:
+        - get:
+            url: '/qa/question/{{$randomNumber(1,100000)}}/helpful'
+        count: 1
+  - name: 'Update an Answer Helpful'
+    flow:
+      - get:
+          url: '/'
+      - loop:
+        - get:
+            url: '/qa/answer/{{$randomNumber(1,100000)}}/helpful'
+        count: 1
+  - name: 'Update Report Question'
+    flow:
+      - get:
+          url: '/'
+      - loop:
+        - get:
+            url: '/qa/question/{{$randomNumber(1,100000)}}/report'
+        count: 1
