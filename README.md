@@ -1,4 +1,4 @@
-# FresherApparrel Questions and Answers
+# FresherApparrel -- Questions and Answers
 * Were tasked with taking an existing front end platform and picking out a database to use with it.
 * Designed out the schema, wrote out every query to the database.
 * Created my own server and wrote the request handlers.
